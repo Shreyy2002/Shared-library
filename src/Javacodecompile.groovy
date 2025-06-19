@@ -9,41 +9,28 @@ class Javacodecompile implements Serializable {
     def run(Map config) {
         def buildStatus = 'SUCCESS'
 
-        steps.pipeline {
-            agent any
-
-            stages {
-                stage('Clone Code') {
-                    steps {
-                        steps.git branch: config.branch, url: config.gitRepo
-                    }
+        steps.node {
+            try {
+                steps.stage('Clone Code') {
+                    steps.git branch: config.branch, url: config.gitRepo
                 }
 
-                stage('Compile Code') {
-                    steps {
-                        steps.script {
-                            try {
-                                steps.sh 'mvn clean compile'
-                            } catch (e) {
-                                buildStatus = 'FAILURE'
-                                steps.currentBuild.result = 'FAILURE'
-                                throw e
-                            }
-                        }
-                    }
+                steps.stage('Compile Code') {
+                    steps.sh 'mvn clean compile'
                 }
-            }
 
-            post {
-                always {
-                    steps.script {
-                        notify(
-                            buildStatus,
-                            config.priority,
-                            config.slackChannel,
-                            config.emailRecipients
-                        )
-                    }
+            } catch (Exception e) {
+                buildStatus = 'FAILURE'
+                steps.currentBuild.result = 'FAILURE'
+                throw e
+            } finally {
+                steps.stage('Notify') {
+                    notify(
+                        buildStatus,
+                        config.priority,
+                        config.slackChannel,
+                        config.emailRecipients
+                    )
                 }
             }
         }
