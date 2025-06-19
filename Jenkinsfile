@@ -6,7 +6,7 @@ pipeline {
         stage('Run Build Pipeline') {
             steps {
                 script {
-                    def pipeline = new BuildPipeline(this)
+                    def pipeline = new Javacodecompile(this)
                     pipeline.run([
                         gitRepo: 'https://github.com/OT-MICROSERVICES/salary-api.git',
                         branch: 'main',
