@@ -54,7 +54,7 @@ class Javacodecompile implements Serializable {
         def slackMessage = """
 ${icons[status]} *${priority} Build ${status}*
 *Status:* ${results[priority][status]}
-*Project:* `${steps.env.JOB_NAME}`
+*Project:* ${steps.env.JOB_NAME}
 *Build Number:* #${steps.env.BUILD_NUMBER}
 *Triggered By:* ${triggeredBy}
 *Time (IST):* ${buildTime}
