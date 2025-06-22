@@ -1,4 +1,4 @@
-@Library('shared-library') _
+@Library('shared-library@main') _
 
 import org.cloudninja.application.java.codecompile.Javacodecompile
 import org.cloudninja.application.generic.Notification
