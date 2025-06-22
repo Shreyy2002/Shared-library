@@ -6,14 +6,13 @@ pipeline {
         stage('Run Build Pipeline') {
             steps {
                 script {
-                    def pipeline = new Javacodecompile(this)
-                    pipeline.run([
+                    javaBuildPipeline(
                         gitRepo: 'https://github.com/OT-MICROSERVICES/salary-api.git',
                         branch: 'main',
                         priority: 'P1',
                         slackChannel: '#jenkins-notification',
                         emailRecipients: 'shrey.tyagi.snaatak@mygurukulam.co'
-                    ])
+                    )
                 }
             }
         }
